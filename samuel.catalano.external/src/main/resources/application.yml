@@ -1,0 +1,11 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: oodle-finance-external
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+  banner:
+    location: banner.txt
