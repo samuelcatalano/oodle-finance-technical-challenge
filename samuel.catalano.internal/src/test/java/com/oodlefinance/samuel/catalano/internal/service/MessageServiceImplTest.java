@@ -23,6 +23,7 @@ import com.oodlefinance.samuel.catalano.internal.service.impl.MessageServiceImpl
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -56,8 +57,12 @@ class MessageServiceImplTest {
 
     final MessageDTO result = messageService.create(messageDTO);
 
-    verify(repository, times(1)).save(message);
-    verify(modelMapper, times(1)).map(message, MessageDTO.class);
+    final ArgumentCaptor<Message> captor = ArgumentCaptor.forClass(Message.class);
+    verify(repository, times(1)).save(captor.capture());
+    final Message capturedMessage = captor.getValue();
+    assertEquals(message, capturedMessage);
+
+    verify(modelMapper, times(1)).map(capturedMessage, MessageDTO.class);
     assertEquals(messageDTO, result);
   }
 
@@ -104,6 +109,13 @@ class MessageServiceImplTest {
     when(modelMapper.map(message, MessageDTO.class)).thenReturn(messageDTO);
 
     final MessageDTO result = messageService.findById(id);
+
+    final ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+    verify(repository, times(1)).findById(captor.capture());
+    final Long capturedId = captor.getValue();
+    assertEquals(id, capturedId);
+
+    verify(modelMapper, times(1)).map(message, MessageDTO.class);
     assertEquals(messageDTO, result);
   }
 

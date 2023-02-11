@@ -30,6 +30,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = ServiceException.class)
   public ResponseEntity<ErrorResponse> handleServiceException(final ServiceException ex, final WebRequest request) {
     final ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
   }
 }
